@@ -17,6 +17,6 @@ jobs:
 
       - name: Build the project
         run: |
-          apt-get install nasm
-          chmod +x ./build.sh
+          sudo apt-get install nasm
+          sudo chmod +x ./build.sh
           ./build.sh

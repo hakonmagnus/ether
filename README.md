@@ -8,7 +8,7 @@ use of new technology such as UEFI and Intel instructions.
 ## Build
 
 To build Ether, you need to have a UNIX terminal to run build.sh in the
-root directory.
+root directory. You must also have NASM installed.
 
 ```
 sudo chmod +x build.sh
