@@ -1,0 +1,32 @@
+language: c++
+
+addons:
+  apt:
+    packages:
+      - nasm
+      - g++-6
+    sources: &sources
+      - ubuntu-toolchain-r-test
+
+matrix:
+  exclude:
+    - env: TRAVIS_EMPTY_JOB_WORKAROUND=true
+
+  include:
+    - os: linux
+      env: LLVM_VERSION=3.9.0
+      compiler: clang
+
+    - os: linux
+      env: COMPILER=g++-6
+      compiler: gcc
+
+    - os: osx
+      osx_image: xcode8
+
+install:
+  - sudo apt-get install nasm
+
+script:
+  - sudo chmod +x ./build.sh
+  - ./build.sh
