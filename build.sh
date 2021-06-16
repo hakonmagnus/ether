@@ -1,5 +1,13 @@
 #!/bin/bash
 
-echo "Building Ether..."
+echo "Building Ether...\n"
 
-echo "Successful build."
+mkdir -p build
+cd build
+
+cmake ../diskimg
+make
+
+nasm ../bios/boot.asm -o boot.bin
+
+./diskimg
