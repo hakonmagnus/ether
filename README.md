@@ -1,5 +1,7 @@
 # Ether Operating System
 
+![GitHub Workflow](https://github.com/hakonmagnus/ether/.github/workflows/ci.yml/badge.svg)
+
 The Ether Operating System is a POSIX operating system for the x86
 architecture written in assembly language. It is built with optimization
 in mind, with high performance and low disk space requirements. It makes
