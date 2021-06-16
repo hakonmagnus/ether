@@ -27,6 +27,10 @@ your virtual machine.
 
 Currently, there is no installer. One will be made shortly.
 
+## Documentation
+
+Please look at the [docs](/docs) directory for some useful documentation files.
+
 ## Contribute
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md)
