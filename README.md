@@ -1,6 +1,7 @@
 # Ether Operating System
 
 [![Build Status](https://travis-ci.com/hakonmagnus/ether.svg?branch=main)](https://travis-ci.com/hakonmagnus/ether)
+[![codecov](https://codecov.io/gh/hakonmagnus/ether/branch/master/graph/badge.svg?token=7CS3A5V6B0)](https://codecov.io/gh/hakonmagnus/ether)
 
 The Ether Operating System is a POSIX operating system for the x86
 architecture written in assembly language. It is built with optimization
