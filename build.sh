@@ -2,12 +2,14 @@
 
 echo "Building Ether...\n"
 
+# Create and enter build directory
 mkdir -p build
 cd build
 
-cmake ../diskimg
+# Build the utils
+cmake ../utils
 make
 
-nasm ../bios/boot.asm -o boot.bin
-
-./diskimg
+# Exit gracefully
+echo "Build succeeded."
+exit 0
