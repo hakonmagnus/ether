@@ -9,7 +9,7 @@ if (CLANG_TIDY)
         -I ${INCLUDE_DIRECTORIES})
 endif ()
 
-find_program(CLANG_FORMAT NAMES clang_format clang-format-6.0)
+find_program(CLANG_FORMAT NAMES clang-format clang-format-6.0)
 if (CLANG_FORMAT)
     add_custom_target(
         format
