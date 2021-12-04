@@ -33,6 +33,14 @@ set.
 
 ## Screenshots
 
+## Design
+
+Ether follows a hybrid kernel design. The kernel is responsible for IPC, scheduling and
+memory management and disk access is loaded through boot time modules loaded by the OS
+loader. The system follows the Multiboot 2 standard for booting. The operating system
+interface will be mostly POSIX compliant. Custom file systems are used by the operating
+system, as documented in [EBFS.md](docs/EBFS.md) and [EtherFS.md](docs/EtherFS.md).
+
 ## Release History
 
 | Version Number | Version Name | Date | Release notes |

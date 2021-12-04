@@ -11,10 +11,12 @@
 
 set(partlib_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CRC32.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Image.cpp
 )
 
 set(partlib_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/partlib/CRC32.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/partlib/Image.hpp
 )
 
 add_library(partlib STATIC ${partlib_SOURCES})

@@ -9,12 +9,16 @@
 #  (_______/   )_(   |/     \|(_______/|/   \__/                              |
 #=============================================================================|
 
-# Subdirectories
+set (diskimg_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+)
 
-add_subdirectory(partlib)
-add_subdirectory(diskimg)
+add_executable(diskimg ${diskimg_SOURCES})
+
+# Directories and libraries
+
+target_link_libraries(diskimg partlib)
 
 # Lists
 
-set(ETHER_SOURCE_FILES ${ETHER_SOURCE_FILES} PARENT_SCOPE)
-set(ETHER_INCLUDE_FILES ${ETHER_INCLUDE_FILES} PARENT_SCOPE)
+set(ETHER_SOURCE_FILES ${ETHER_SOURCE_FILES} ${diskimg_SOURCES} PARENT_SCOPE)

@@ -9,27 +9,58 @@
 //  (_______/   )_(   |/     \|(_______/|/   \__/                             |
 //============================================================================|
 
-#pragma once
-
+#include <string>
 #include <cstdint>
 
 using std::size_t;
 
 /**
- * \addtogroup partlib
+ * \defgroup partlib Partition library
  * @{
  */
 
 /**
- * Calculates the CRC32 checksum of a buffer
- * \param initial Initial CRC32 value
- * \param buf Data buffer
- * \param len Data buffer length
- * \return CRC32 value
+ * Disk image class
  */
-uint32_t crc32(uint32_t initial, const void* buf, size_t len);
+class Image
+{
+public:
+    /**
+     * Constructor
+     * \param size Size of disk image
+     * \param mbr MBR filename
+     */
+    Image(const size_t size, const std::string& mbr);
+    
+    /**
+     * Destructor
+     */
+    ~Image();
+    
+    /**
+     * Write disk image
+     * \param path Output filename
+     * \return True on success
+     */
+    bool write(const std::string& path);
+    
+private:
+    /**
+     * Image buffer
+     */
+    uint8_t* m_image;
+    
+    /**
+     * Size
+     */
+    size_t m_size;
+    
+    /**
+     * MBR filename
+     */
+    std::string m_mbr;
+};
 
 /**
  * @}
  */
-
