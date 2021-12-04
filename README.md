@@ -7,7 +7,7 @@
   <a href="https://ether-os.com">
     <img
       alt="Ether Operating System"
-      src="https://github.com/hakonmagnus/ether/blob/master/docs/ether.png"
+      src="https://github.com/hakonmagnus/ether/blob/master/docs/ether.svg"
       width="250"
       height="250"
     />
