@@ -1,0 +1,15 @@
+# Directories
+
+build/
+
+# Extensions
+
+*.img
+*.iso
+*.qcow2
+*.qed
+*.raw
+*.vdi
+*.vpc
+*.vhd
+*.vmdk
