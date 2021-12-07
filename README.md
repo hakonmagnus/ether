@@ -23,6 +23,7 @@ set.
 ## Table of Contents
 
 * [Screenshots](#screenshots)
+* [Design](#design)
 * [Release History](#release-history)
 * [Getting Started](#getting-started)
   * [Cloning](#cloning)

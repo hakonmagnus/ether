@@ -20,6 +20,7 @@ int main(int argc, char** argv)
     size_t size{ 0x10000000 };
     std::string output{ "./disk.img" };
     std::string mbr{ "./build/main.mbr" };
+    std::string loader{ "./build/boot/loader.bin" };
     std::cout << "\033[1;34mEther Disk Utility v1.0.0\033[0m\n";
     srand(time(nullptr));
     
@@ -37,6 +38,7 @@ int main(int argc, char** argv)
                 << "  (-s|--size) Total size in sectors\n"
                 << "  (-o|--output) Output filename\n"
                 << "  (-m|--mbr) MBR filename\n"
+                << "  (-l|--loader) Loader filename\n"
                 << "\n";
             return 0;
         }
@@ -54,6 +56,10 @@ int main(int argc, char** argv)
         {
             mbr = argv[++i];
         }
+        else if (arg == "-l" || arg == "--loader")
+        {
+            loader = argv[++i];
+        }
         else
         {
             std::cout << "\033[1;31mUnsupported argument " << arg << "\033[0m\n";
@@ -61,7 +67,7 @@ int main(int argc, char** argv)
         }
     }
     
-    Image* image = new Image(size, mbr);
+    Image* image = new Image(size, mbr, loader);
     
     if (!image->write(output))
     {

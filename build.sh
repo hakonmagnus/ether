@@ -16,9 +16,12 @@ cd ..
 
 # Assemble
 
+mkdir -p ./build/boot
+
 echo -e "\e[1;32mAssembling boot sectors...\e[0m"
 
 nasm ./mbr/main.asm -o ./build/main.mbr
+nasm ./loader/loader.asm -o ./build/boot/loader.bin
 
 # Create disk image
 

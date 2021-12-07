@@ -11,62 +11,25 @@
 
 #pragma once
 
-#include <string>
 #include <cstdint>
 
-using std::size_t;
-
 /**
- * \defgroup partlib Partition library
+ * \addtogroup partlib
  * @{
  */
 
 /**
- * Disk image class
+ * Generate random GUID
+ * \param buf 16-byte buffer
  */
-class Image
-{
-public:
-    /**
-     * Constructor
-     * \param size Size of disk image
-     * \param mbr MBR filename
-     * \param loader Loader filename
-     */
-    Image(const size_t size, const std::string& mbr, const std::string& loader);
-    
-    /**
-     * Destructor
-     */
-    ~Image();
-    
-    /**
-     * Write disk image
-     * \param path Output filename
-     * \return True on success
-     */
-    bool write(const std::string& path);
-    
-private:
-    /**
-     * Image buffer
-     */
-    uint8_t* m_image;
-    
-    /**
-     * Size
-     */
-    size_t m_size;
-    
-    /**
-     * MBR filename
-     */
-    std::string m_mbr;
-    
-    /**
-     * Loader filename
-     */
-    std::string m_loader;
+void generateGUID(uint8_t* buf);
+
+/**
+ * BIOS boot partition
+ */
+static uint8_t biosGUID[] {
+    0x48, 0x61, 0x68, 0x21, 0x49, 0x64, 0x6F, 0x6E,
+    0x74, 0x4E, 0x65, 0x65, 0x64, 0x45, 0x46, 0x49
 };
 
 /**
