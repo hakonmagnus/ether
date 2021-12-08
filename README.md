@@ -34,6 +34,13 @@ set.
 
 ## Screenshots
 
+<img
+  alt="Screenshot 1"
+  src="https://github.com/hakonmagnus/ether/blob/master/docs/screenshot1.png"
+  width="772"
+  height="513"
+/>
+  
 ## Design
 
 Ether follows a hybrid kernel design. The kernel is responsible for IPC, scheduling and

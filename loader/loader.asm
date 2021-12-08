@@ -26,6 +26,8 @@ start:
     mov ss, ax
     mov sp, 0xFFFF
     sti
+
+    mov byte [boot_info.biosdev], dl
     
     call gdt_install
     call a20_enable
@@ -41,7 +43,32 @@ start:
     mov ds, ax
     mov di, 0x9000
     call bios_get_memory_map
+
+    mov eax, 0
+    mov ax, bp
+    mov bx, 24
+    mul bx
+
+    mov si, boot_info
+    add word [si], ax
+
+    add si, boot_info_end - boot_info
+    mov word [si], 6
+
+    mov word [si+4], ax
+    mov word [si+8], 24
+
+    add si, 16
     
+    cld
+    mov di, si
+    mov si, 0x9000
+    mov bx, 2
+    div bx
+    mov cx, ax
+    rep movsw
+
+.entries_done:
     cli
     mov eax, cr0
     or eax, 1

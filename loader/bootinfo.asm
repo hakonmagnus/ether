@@ -27,3 +27,5 @@ boot_info:
     .sub_partition dd 0                     ; sub_partition
 
 boot_info_end:
+
+    times 128 dd 0                          ; Extra space for memory map

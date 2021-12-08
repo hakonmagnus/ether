@@ -74,8 +74,12 @@ bios_get_memory_map:
     stc
 
 .done:
+    mov word [.count], bp
     popad
+    mov word bp, [.count]
     ret
+
+    .count dw 0
 
 ;=============================================================================;
 ; bios_get_memory_size                                                        ;

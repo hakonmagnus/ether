@@ -118,3 +118,50 @@ int_to_string:
     ret
 
     .t times 18 db 0
+
+;=============================================================================;
+; int_to_hex                                                                  ;
+; Convert an integer to a hex string                                          ;
+; @param EAX = Integer                                                        ;
+; @return ESI = String                                                        ;
+;=============================================================================;
+int_to_hex:
+    pusha
+
+    xor ecx, ecx
+    mov ebx, 16
+    mov edi, .t
+
+.push:
+    xor edx, edx
+    div ebx
+    inc ecx
+    push edx
+    test eax, eax
+    jnz .push
+
+.pop:
+    pop edx
+
+    cmp dl, 10
+    jb .below
+
+    add dl, 'A' - 0xA
+    jmp .next
+
+.below:
+    add dl, '0'
+
+.next:
+    mov byte [edi], dl
+    inc edi
+    dec ecx
+    jnz .pop
+
+    mov byte [edi], 0
+
+    popa
+    lea dword esi, [.t]
+    ret
+
+    .t times 18 db 0
