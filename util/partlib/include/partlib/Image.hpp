@@ -32,8 +32,10 @@ public:
      * \param size Size of disk image
      * \param mbr MBR filename
      * \param loader Loader filename
+     * \param ebfs EBFS root path
      */
-    Image(const size_t size, const std::string& mbr, const std::string& loader);
+    Image(const size_t size, const std::string& mbr, const std::string& loader,
+            const std::string& ebfs);
     
     /**
      * Destructor
@@ -67,6 +69,11 @@ private:
      * Loader filename
      */
     std::string m_loader;
+
+    /**
+     * EBFS root
+     */
+    std::string m_ebfs;
 };
 
 /**

@@ -17,11 +17,25 @@ cd ..
 # Assemble
 
 mkdir -p ./build/boot
+mkdir -p ./build/boot/module
 
 echo -e "\e[1;32mAssembling boot sectors...\e[0m"
 
 nasm ./mbr/main.asm -o ./build/main.mbr
-nasm ./loader/loader.asm -o ./build/boot/loader.bin
+nasm ./loader/loader.asm -o ./build/loader.bin
+nasm ./efi/efi.asm -o ./build/BOOTX64.EFI
+
+# Kernel
+
+echo -e "\e[1;32mAssembling and linking kernel...\e[0m"
+
+mkdir -p ./build/ether
+nasm -felf64 ./ether/entry.asm -o ./build/ether/entry.o
+ld -T ./ether/link.ld -o ./build/boot/ether ./build/ether/entry.o
+
+# Config
+
+cp ./config/boot.config ./build/boot/boot.config
 
 # Create disk image
 

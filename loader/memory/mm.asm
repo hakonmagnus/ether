@@ -9,47 +9,22 @@
 ;  (_______/   )_(   |/     \|(_______/|/   \__/                              |
 ;=============================================================================|
 
-org 0x500
-bits 16
+bits 32
+
+mm_next dd loader_end
 
 ;=============================================================================;
-; start                                                                       ;
-; Loader 16-bit entry point                                                   ;
+; mm_alloc                                                                    ;
+; Allocate a block of a given size                                            ;
+; @param EAX = Size of block                                                  ;
+; @return EAX = Pointer to block                                              ;
 ;=============================================================================;
-start:
-    cli
-    xor ax, ax
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov ss, ax
-    mov sp, 0xFFFF
-    sti
-    
-    call gdt_install
-    call a20_enable
+mm_alloc:
+    push ebx
 
-    xor eax, eax
-    xor ebx, ebx
-    call bios_get_memory_size
+    mov dword ebx, [mm_next]
+    add dword [mm_next], eax
+    mov eax, ebx
 
-    mov word [boot_info.mem_lower], ax
-    mov word [boot_info.mem_upper], bx
-
-    mov eax, 0
-    mov ds, ax
-    mov di, 0x9000
-    call bios_get_memory_map
-    
-    cli
-    mov eax, cr0
-    or eax, 1
-    mov cr0, eax
-    jmp 0x8:loader32
-
-%include "./loader/rm/gdt.asm"
-%include "./loader/rm/a20.asm"
-%include "./loader/rm/memory.asm"
-%include "./loader/bootinfo.asm"
-%include "./loader/loader32.asm"
+    pop ebx
+    ret

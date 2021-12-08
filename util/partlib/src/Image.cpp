@@ -13,15 +13,16 @@
 #include "partlib/GPT.hpp"
 #include "partlib/GUID.hpp"
 #include "partlib/CRC32.hpp"
+#include "partlib/EBFS.hpp"
 
 #include <cstring>
 #include <fstream>
 #include <iostream>
 
 Image::Image(const size_t size, const std::string& mbr,
-    const std::string& loader) :
+    const std::string& loader, const std::string& ebfs) :
     m_size{ size }, m_image{ nullptr }, m_mbr{ mbr },
-    m_loader{ loader }
+    m_loader{ loader }, m_ebfs{ ebfs }
 {
     m_image = new uint8_t[size];
     memset(m_image, 0, size);
@@ -36,12 +37,19 @@ Image::~Image()
 bool Image::write(const std::string& output)
 {
     size_t biosSize = 64;
+    size_t ebfsSize = 256;
     
     auto loaderfile = std::fstream(m_loader, std::ios::in | std::ios::binary | std::ios::ate);
     auto loadersize = loaderfile.tellg();
     loaderfile.seekg(0, std::ios::beg);
     loaderfile.read((char*)&m_image[0x200 * 35], loadersize);
     loaderfile.close();
+
+    EBFS* ebfs = new EBFS(m_ebfs, ebfsSize * 0x200);
+    uint8_t* ebfsBuf = ebfs->render();
+    memcpy(&m_image[(35 + biosSize + 1) * 0x200], ebfsBuf, ebfsSize * 0x200);
+    delete ebfs;
+    ebfs = nullptr;
     
     uint8_t* entries = new uint8_t[4 * sizeof(GPTEntry)];
     memset(entries, 0, 4 * sizeof(GPTEntry));
@@ -54,7 +62,16 @@ bool Image::write(const std::string& output)
     bios.lastLBA = 35 + biosSize;
     memcpy(bios.partitionName, u"BIOS boot partition", 19 * sizeof(char16_t));
     memcpy(&entries[0], &bios, sizeof(bios));
-    
+   
+    GPTEntry ebfsEnt;
+    memset(&ebfsEnt, 0, sizeof(ebfsEnt));
+    memcpy(ebfsEnt.typeGUID, ebfsGUID, 16);
+    generateGUID(ebfsEnt.uniqueGUID);
+    ebfsEnt.firstLBA = bios.lastLBA + 1;
+    ebfsEnt.lastLBA = ebfsEnt.firstLBA + ebfsSize;
+    memcpy(ebfsEnt.partitionName, u"Ether Boot Partition", 20 * sizeof(char16_t));
+    memcpy(&entries[sizeof(GPTEntry)], &ebfsEnt, sizeof(ebfsEnt));
+
     memcpy(&m_image[0x400], entries, 4 * sizeof(GPTEntry));
     memcpy(&m_image[((m_size / 0x200) - 34) * 0x200], entries, 4 * sizeof(GPTEntry));
     

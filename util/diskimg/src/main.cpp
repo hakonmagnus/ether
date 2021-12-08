@@ -20,7 +20,8 @@ int main(int argc, char** argv)
     size_t size{ 0x10000000 };
     std::string output{ "./disk.img" };
     std::string mbr{ "./build/main.mbr" };
-    std::string loader{ "./build/boot/loader.bin" };
+    std::string loader{ "./build/loader.bin" };
+    std::string ebfs{ "./build/boot" };
     std::cout << "\033[1;34mEther Disk Utility v1.0.0\033[0m\n";
     srand(time(nullptr));
     
@@ -67,7 +68,7 @@ int main(int argc, char** argv)
         }
     }
     
-    Image* image = new Image(size, mbr, loader);
+    Image* image = new Image(size, mbr, loader, ebfs);
     
     if (!image->write(output))
     {
