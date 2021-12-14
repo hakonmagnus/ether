@@ -11,6 +11,12 @@
 
 bits 64
 
+;=============================================================================;
+;                          ETHER OPERATING SYSTEM                             ;
+;                                OS KERNEL                                    ;
+;=============================================================================;
+
+
 %include "./version.asm"
 
 struc memory_region
@@ -32,12 +38,15 @@ extern stringinit
 extern vga_text_print_string
 extern vga_text_clear_screen
 extern vga_text_put_char
+extern pmm_init
+extern pmm_reserve_region
 
 section .text
 
 global main
 
 main:
+    ; Set segment
     mov ax, 0x10
     mov ds, ax
     mov es, ax
@@ -46,6 +55,7 @@ main:
     mov ss, ax
     mov esp, 0x90000
 
+    ; Initialize SSE and string functions
     call sse_init
     call stringinit
 
@@ -53,8 +63,10 @@ main:
     lea qword rdi, [welcome_text]
     call vga_text_print_string
 
+    ; Parse the multiboot info struct
     call multiboot_parse
 
+    ; Calculate memory size for PMM
     mov qword rax, [mem_upper]
     mov rbx, 64
     mul rbx
@@ -64,6 +76,10 @@ main:
     xor rdx, rdx
     mov rbx, 1024
     div rbx
+    
+    ; RAX contains size of memory in MiB
+    mov rdi, rax
+    call pmm_init
 
     lea qword rdi, [mem_text_1]
     call vga_text_print_string
@@ -83,6 +99,7 @@ main:
     lea qword rdi, [boot_dev_text]
     call vga_text_print_string
 
+    ; The BIOS boot device was parsed by multiboot_parse
     mov qword rdi, [bios_boot_device]
     lea qword rsi, [integer]
     mov rdx, 15
@@ -95,6 +112,7 @@ main:
     mov rdi, 0x0A
     call vga_text_put_char
 
+    ; Iterate through memory map and reserve regions
     lea qword rdi, [bios_memory_map]
     xor rcx, rcx
 
@@ -104,7 +122,7 @@ main:
     cmp eax, 4
     jbe .cont
 
-    mov dword [rdi+memory_region.type], 1
+    mov dword [rdi+memory_region.type], 2
 
 .cont:
     cmp rcx, 0
@@ -190,6 +208,10 @@ main:
     jmp .next_entry
 
 .finish:
+    ; Make sure to reserve the kernel
+    mov rdi, 0x100000               ; Kernel is located at 0x100000
+    mov rsi, 0x100000               ; Assume kernel is 1MiB
+    ;call pmm_reserve_region
 
     cli
     hlt

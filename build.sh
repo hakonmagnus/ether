@@ -33,15 +33,18 @@ mkdir -p ./build/ether
 mkdir -p ./build/ether/lib
 mkdir -p ./build/ether/cpu
 mkdir -p ./build/ether/video
+mkdir -p ./build/ether/memory
 nasm -felf64 ./ether/entry.asm -o ./build/ether/entry.o
 nasm -felf64 ./ether/multiboot.asm -o ./build/ether/multiboot.o
-nasm -felf64 ./ether/main.asm -o ./build/ether/main.o
+nasm -felf64 ./ether/ether.asm -o ./build/ether/ether.o
 nasm -felf64 ./ether/lib/string.asm -o ./build/ether/lib/string.o
 nasm -felf64 ./ether/cpu/gdt.asm -o ./build/ether/cpu/gdt.o
 nasm -felf64 ./ether/cpu/sse.asm -o ./build/ether/cpu/sse.o
 nasm -felf64 ./ether/video/vgatext.asm -o ./build/ether/video/vgatext.o
+nasm -felf64 ./ether/memory/pmm.asm -o ./build/ether/memory/pmm.o
 ld -T ./ether/link.ld -o ./build/boot/ether ./build/ether/entry.o ./build/ether/multiboot.o ./build/ether/cpu/gdt.o \
-    ./build/ether/main.o ./build/ether/lib/string.o ./build/ether/video/vgatext.o ./build/ether/cpu/sse.o
+    ./build/ether/ether.o ./build/ether/lib/string.o ./build/ether/video/vgatext.o ./build/ether/cpu/sse.o \
+    ./build/ether/memory/pmm.o
 
 # Config
 
